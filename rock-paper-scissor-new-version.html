@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Rock-Paper-Scissor Game</title>
+    <style>
+      body {
+        background-color: rgb(25,25,25);
+        color:white;
+        font-family:arial;
+      }
+      .title {
+        font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+      }
+
+      .move-icon {
+        height : 50px;
+      }
+      .move-button {
+        background-color: transparent;
+        border: solid 1px rgb(25, 25, 25);
+        cursor:pointer;
+      
+      }
+      .move-button .move-icon {
+    height: 100%;
+    width: 56%;
+    border-radius: 65px;
+      }
+      .js-main {
+    text-align: center;
+    font-size: 30px;
+}
+.reset-btn-main {
+    text-align: center;
+    /* font-size: 53px; */
+}
+.reset-btn-main .reset-btn {
+    font-size: 27px;
+    cursor:pointer;
+}
+img.choose-image {
+    height: 100%;
+    width: 10%;
+    border-radius: 50px;
+}
+p.js-score {
+    margin-top: 50px;
+}
+.cv_main_button_wrapper {
+    width: 100%;
+    text-align: center;
+}
+    </style>
+</head>
+<body>
+  <p class="title">Rock Paper Scissor </p>
+  <div class="cv_main_button_wrapper">
+  <button class="move-button" onclick="
+    play_game('rock');
+   
+  "><img class="move-icon" src="images/rock.jpg"></button>
+
+  <button class="move-button" onclick = "
+      play_game('paper');
+  "><img class="move-icon" src="images/paper.jpg"></button>
+  <button class="move-button" onclick="
+        play_game('scissors');
+  "><img class="move-icon" src="images/scissors.jpg"></button>
+  </div>
+  <div class="js-main">
+  <p class="js-result"></p>
+  <p class="js-moves">
+  </p>
+  <p class="js-score"></p>
+  </div>
+  <div class="reset-btn-main">
+  <button class="reset-btn" onclick = "
+    score.Wins = 0,
+    score.Losses = 0,
+    score.Ties = 0
+    localStorage.removeItem('score');
+    updateScore()
+  ">Reset Score</button>
+  </div>
+  
+
+    <script>
+        
+         let  score = JSON.parse(localStorage.getItem('score'));
+        
+         if(score === null){
+          score = {
+            Wins : 0,
+            Losses : 0,
+            Ties : 0
+          }
+         }
+         updateScore();
+        function play_game(playerMove){
+          const computerMove = pickComputerMove();
+          let result = '';
+            if (playerMove === 'scissors'){
+              if (computerMove === 'rock'){
+              result = 'You lose!';
+            }else if (computerMove === 'paper'){
+              result = 'You Win!';
+            }else if (computerMove === 'scissors'){
+              result = 'Tie!';
+            }
+   
+          }
+          if (playerMove === 'rock'){
+            if (computerMove === 'rock'){
+            result = 'Tie!';
+            }else if (computerMove === 'paper'){
+              result = 'You lose!';
+            }else if (computerMove === 'scissors'){
+              result = 'You Win!';
+            }
+ 
+        }
+        if (playerMove === 'paper'){
+          if (computerMove === 'rock'){
+              result = 'You Win!';
+          }else if (computerMove === 'paper'){
+            result = 'Tie!';
+          }else if (computerMove === 'scissors'){
+            result = 'You lose!';
+          }
+           
+        }
+        if (result === 'You Win!'){
+                score.Wins += 1;
+              }else if(result === 'You lose!'){
+              score.Losses += 1;  
+              }else if(result === 'Tie!'){
+                score.Ties += 1;
+              }
+                localStorage.setItem('score',JSON.stringify(score));
+                updateScore();
+                 document.querySelector('.js-result').innerHTML = result;
+                 document.querySelector('.js-moves')
+                  .innerHTML = `    You
+                      <img class="choose-image" src="images/${playerMove}.jpg">
+                      <img class="choose-image" src="images/${computerMove}.jpg">
+                      Computer`;
+                   
+          }
+        function updateScore(){
+          document.querySelector('.js-score')
+          .innerHTML = `Wins : ${score.Wins}, Losses : ${score.Losses}, Ties : ${score.Ties}`;
+        }
+        function pickComputerMove(){
+          randomNumber = Math.random();
+          let computerMove = ''; // by using return statement we can eliminate the issue of not defined variable
+          if(randomNumber >= 0 && randomNumber < 1/3){
+          computerMove = 'rock';
+          }else if(randomNumber >= 1/3 && randomNumber < 2/3){
+            computerMove = 'paper';
+          }else if(randomNumber >= 2/3 && randomNumber < 1){
+            computerMove = 'scissors';
+          }
+          return computerMove;
+        }      
+
+    </script>
+</body>
+</html>
